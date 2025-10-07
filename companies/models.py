@@ -1,7 +1,5 @@
 from django.db import models
 
-
-
 class Enterprise(models.Model):
     """Modelo que representa uma empresa no sistema.
     Attributes:
@@ -21,3 +19,23 @@ class Enterprise(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Employee(models.Model):
+    """Modelo que representa um funcionário associado a uma empresa.
+    Attributes:
+        user (User): Usuário que é o funcionário
+        enterprise (Enterprise): Empresa à qual o funcionário está associado
+
+    Example:
+        >>> employee = Employee.objects.create(
+        ...     user=user_instance,
+        ...     enterprise=enterprise_instance
+        ... )
+        >>> print(employee.user.name)
+        'Nome do Funcionário'
+    """
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name='employees')
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, related_name='employees')
+
+    def __str__(self):
+        return f"{self.user.name} - {self.enterprise.name}"
