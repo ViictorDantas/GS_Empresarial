@@ -6,8 +6,7 @@ from companies.models import Enterprise, Employee
 
 
 class Autentication:
-    """
-    Classe responsável pela autenticação de usuários no sistema.
+    """Classe responsável pela autenticação de usuários no sistema.
     Esta classe fornece métodos para registrar novos usuários e autenticar usuários existentes.
     
     Methods:
@@ -29,6 +28,44 @@ class Autentication:
         return user
     
     def signup(self, name, email, password, type_account='owner', company_id=False) -> User:
+        """Registra um novo usuário no sistema.
+        
+        Args:
+            name (str): Nome do usuário.
+            email (str): Email do usuário.
+            password (str): Senha do usuário.
+            type_account (str, optional): Tipo de conta do usuário. Pode ser 'owner' ou 'employee'. Padrão é 'owner'.
+            company_id (int, optional): ID da empresa associada ao funcionário. Obrigatório se type_account for 'employee'. Padrão é False. 
+
+        Raises:
+            APIException: Se nome, email ou senha estiverem vazios.
+            APIException: Se type_account for 'employee' e company_id não for fornecido.
+            APIException: Se o email já estiver cadastrado.
+
+        Returns:
+            User: Instância do usuário criado.
+
+        Example:
+            >>> auth = Autentication()
+            >>> user = auth.signup(
+            ...     name="João Silva",
+            ...     email="joao.silva@example.com", 
+            ...     password="senha_segura",
+            ...     type_account="owner"
+            ... )
+            >>> print(user.email)
+
+            'joao.silva@example.com'
+            >>> employee = auth.signup(
+            ...     name="Maria Souza",
+            ...     email="maria.souza@example.com",
+            ...     password="senha_segura",
+            ...     type_account="employee",
+            ...     company_id=1
+            ... )
+            >>> print(employee.email)
+            'maria.souza@example.com'
+        """
         if name == '' or email == '' or password == '':
             raise APIException("Nome, email e senha são obrigatórios")
         
